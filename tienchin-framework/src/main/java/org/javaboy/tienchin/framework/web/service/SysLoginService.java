@@ -106,6 +106,8 @@ public class SysLoginService {
             String captcha = redisCache.getCacheObject(verifyKey);
             redisCache.deleteObject(verifyKey);
             if (captcha == null) {
+                //超过两分钟，redis中的验证码会过期然后自动删除
+                //开启一个异步任务去写日志
                 AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
                 throw new CaptchaExpireException();
             }

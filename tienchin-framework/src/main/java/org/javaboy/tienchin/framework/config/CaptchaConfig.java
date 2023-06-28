@@ -16,6 +16,10 @@ import static com.google.code.kaptcha.Constants.*;
  */
 @Configuration
 public class CaptchaConfig {
+    /**
+     * 用来生成字符串验证码
+     * @return
+     */
     @Bean(name = "captchaProducer")
     public DefaultKaptcha getKaptchaBean() {
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
@@ -31,6 +35,7 @@ public class CaptchaConfig {
         // 验证码文本字符大小 默认为40
         properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_SIZE, "38");
         // KAPTCHA_SESSION_KEY
+        //将来生成验证码的时候，会自动将验证码存入session中
         properties.setProperty(KAPTCHA_SESSION_CONFIG_KEY, "kaptchaCode");
         // 验证码文本字符长度 默认为5
         properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_LENGTH, "4");
@@ -43,6 +48,10 @@ public class CaptchaConfig {
         return defaultKaptcha;
     }
 
+    /**
+     * 用来生成数学运算验证码
+     * @return
+     */
     @Bean(name = "captchaProducerMath")
     public DefaultKaptcha getKaptchaBeanMath() {
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();

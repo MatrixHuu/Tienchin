@@ -47,6 +47,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
         registry.addInterceptor(repeatSubmitInterceptor).addPathPatterns("/**");
     }
 
+
     /**
      * 跨域配置
      */
@@ -67,5 +68,10 @@ public class ResourcesConfig implements WebMvcConfigurer {
         source.registerCorsConfiguration("/**", config);
         // 返回新的CorsFilter
         return new CorsFilter(source);
+    }
+
+    @Bean
+    CustomMethodSecurityExpressionHandler customMethodSecurityExpressionHandler() {
+        return new CustomMethodSecurityExpressionHandler();
     }
 }

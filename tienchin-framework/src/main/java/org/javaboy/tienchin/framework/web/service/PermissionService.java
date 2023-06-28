@@ -15,7 +15,7 @@ import org.javaboy.tienchin.framework.security.context.PermissionContextHolder;
  *
  * @author tienchin
  */
-@Service("ss")
+//@Service("ss")
 public class PermissionService {
     /**
      * 所有权限标识

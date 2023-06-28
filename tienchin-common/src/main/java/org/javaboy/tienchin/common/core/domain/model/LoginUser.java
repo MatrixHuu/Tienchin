@@ -1,9 +1,13 @@
 package org.javaboy.tienchin.common.core.domain.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.alibaba.fastjson2.annotation.JSONField;
 import org.javaboy.tienchin.common.core.domain.entity.SysUser;
@@ -227,8 +231,14 @@ public class LoginUser implements UserDetails {
         this.user = user;
     }
 
+    //返回给前端的权限是从Permission中获取的，而Security是从ContextHolder中获取权限校验的
+    //不加JsonIgnore会出现问题
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        if (permissions != null && permissions.size() > 0) {
+            return permissions.stream().map(p -> new SimpleGrantedAuthority(p)).collect(Collectors.toList());
+        }
+        return new ArrayList<>();
     }
 }
