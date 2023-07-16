@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	
+    <modelVersion>4.0.0</modelVersion>
+
     <groupId>org.javaboy</groupId>
     <artifactId>tienchin</artifactId>
     <version>0.0.1</version>
@@ -11,7 +11,7 @@
     <name>tienchin</name>
     <url>http://www.tienchin.vip</url>
     <description>TienChin健身管理系统</description>
-    
+
     <properties>
         <tienchin.version>0.0.1</tienchin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,17 +30,25 @@
         <poi.version>4.1.2</poi.version>
         <velocity.version>2.3</velocity.version>
         <jwt.version>0.9.1</jwt.version>
+        <mybatis-plus.version>3.5.1</mybatis-plus.version>
+        <spring-boot.version>2.5.14</spring-boot.version>
+        <mybatis-plus-generator.version>3.5.3</mybatis-plus-generator.version>
     </properties>
-	
+
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
-
+            <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
             <!-- SpringBoot的依赖配置-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.5.14</version>
+                <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -50,6 +58,12 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-generator.version}</version>
             </dependency>
 
             <!-- 解析客户端操作系统、浏览器等 -->
@@ -170,6 +184,12 @@
                 <version>${tienchin.version}</version>
             </dependency>
 
+            <!-- 渠道管理-->
+            <dependency>
+                <groupId>org.javaboy</groupId>
+                <artifactId>tienchin-channel</artifactId>
+                <version>${tienchin.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -180,8 +200,16 @@
         <module>tienchin-quartz</module>
         <module>tienchin-generator</module>
         <module>tienchin-common</module>
+        <module>tienchin-channel</module>
     </modules>
     <packaging>pom</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
