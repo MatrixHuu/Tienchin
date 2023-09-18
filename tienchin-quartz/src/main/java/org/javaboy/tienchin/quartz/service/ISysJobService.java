@@ -2,8 +2,8 @@ package org.javaboy.tienchin.quartz.service;
 
 import java.util.List;
 
-import org.quartz.SchedulerException;
 import org.javaboy.tienchin.common.exception.job.TaskException;
+import org.quartz.SchedulerException;
 import org.javaboy.tienchin.quartz.domain.SysJob;
 
 /**
@@ -74,7 +74,7 @@ public interface ISysJobService {
      * @param job 调度信息
      * @return 结果
      */
-    public boolean run(SysJob job) throws SchedulerException;
+    public void run(SysJob job) throws SchedulerException;
 
     /**
      * 新增任务

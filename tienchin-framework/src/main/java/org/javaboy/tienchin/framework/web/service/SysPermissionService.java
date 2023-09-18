@@ -1,15 +1,13 @@
 package org.javaboy.tienchin.framework.web.service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.javaboy.tienchin.common.core.domain.entity.SysRole;
 import org.javaboy.tienchin.common.core.domain.entity.SysUser;
 import org.javaboy.tienchin.system.service.ISysMenuService;
 import org.javaboy.tienchin.system.service.ISysRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 用户权限处理
@@ -53,17 +51,7 @@ public class SysPermissionService {
         if (user.isAdmin()) {
             perms.add("*:*:*");
         } else {
-            List<SysRole> roles = user.getRoles();
-            if (!roles.isEmpty() && roles.size() > 1) {
-                // 多角色设置permissions属性，以便数据权限匹配权限
-                for (SysRole role : roles) {
-                    Set<String> rolePerms = menuService.selectMenuPermsByRoleId(role.getRoleId());
-                    role.setPermissions(rolePerms);
-                    perms.addAll(rolePerms);
-                }
-            } else {
-                perms.addAll(menuService.selectMenuPermsByUserId(user.getUserId()));
-            }
+            perms.addAll(menuService.selectMenuPermsByUserId(user.getUserId()));
         }
         return perms;
     }

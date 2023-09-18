@@ -9,9 +9,13 @@ import org.springframework.util.AntPathMatcher;
 import java.util.Collection;
 
 /**
- * @author xyma
- * @version 1.0
- * @data 2023/6/27 18:21
+ * @author 江南一点雨
+ * @微信公众号 江南一点雨
+ * @网站 http://www.itboyhub.com
+ * @国际站 http://www.javaboy.org
+ * @微信 a_java_boy
+ * @GitHub https://github.com/lenve
+ * @Gitee https://gitee.com/lenve
  */
 public class CustomSecurityExpressionRoot extends SecurityExpressionRoot implements MethodSecurityExpressionOperations {
 
@@ -19,11 +23,23 @@ public class CustomSecurityExpressionRoot extends SecurityExpressionRoot impleme
     private Object returnObject;
     private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
+    /**
+     * Creates a new instance
+     *
+     * @param authentication the {@link Authentication} to use. Cannot be null.
+     */
     public CustomSecurityExpressionRoot(Authentication authentication) {
         super(authentication);
     }
 
+    /**
+     * 判断当前对象是否具备某一个权限
+     * @param permission
+     * @return
+     */
     public boolean hasPermission(String permission) {
+        //获取当前登录用户所具有的权限
+        //这里实际上调用到的是 org.javaboy.tienchin.common.core.domain.model.LoginUser.getAuthorities 方法的返回值
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority authority : authorities) {
             if (antPathMatcher.match(authority.getAuthority(), permission)) {
@@ -33,7 +49,12 @@ public class CustomSecurityExpressionRoot extends SecurityExpressionRoot impleme
         return false;
     }
 
-    public boolean hasAnyPermission(String... permissions) {
+    /**
+     * 是否具备多个权限中的任意一个权限
+     * @param permissions
+     * @return
+     */
+    public boolean hasAnyPermissions(String... permissions) {
         if (permissions == null || permissions.length == 0) {
             return false;
         }
@@ -48,11 +69,11 @@ public class CustomSecurityExpressionRoot extends SecurityExpressionRoot impleme
         return false;
     }
 
-    public boolean hasAllPermission(String... permissions) {
+    public boolean hasAllPermissions(String... permissions) {
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         if (permissions == null || permissions.length == 0) {
             return false;
         }
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (String permission : permissions) {
             boolean flag = false;
             for (GrantedAuthority authority : authorities) {

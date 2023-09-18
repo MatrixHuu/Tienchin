@@ -2,6 +2,7 @@ package org.javaboy.tienchin.system.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.javaboy.tienchin.common.core.domain.entity.SysDictType;
 
 /**
@@ -9,6 +10,7 @@ import org.javaboy.tienchin.common.core.domain.entity.SysDictType;
  *
  * @author tienchin
  */
+@Mapper
 public interface SysDictTypeMapper {
     /**
      * 根据条件分页查询字典类型

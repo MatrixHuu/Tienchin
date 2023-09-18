@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.common.enums.HttpMethod;
 
 /**
  * 防止XSS攻击的过滤器
@@ -54,7 +53,7 @@ public class XssFilter implements Filter {
         String url = request.getServletPath();
         String method = request.getMethod();
         // GET DELETE 不过滤
-        if (method == null || HttpMethod.GET.matches(method) || HttpMethod.DELETE.matches(method)) {
+        if (method == null || method.matches("GET") || method.matches("DELETE")) {
             return true;
         }
         return StringUtils.matches(url, excludes);

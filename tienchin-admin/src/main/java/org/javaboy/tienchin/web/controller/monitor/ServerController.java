@@ -1,10 +1,10 @@
 package org.javaboy.tienchin.web.controller.monitor;
 
+import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.framework.web.domain.Server;
 
 /**

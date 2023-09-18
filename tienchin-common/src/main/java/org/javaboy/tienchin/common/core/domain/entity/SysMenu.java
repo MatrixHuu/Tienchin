@@ -79,7 +79,7 @@ public class SysMenu extends BaseEntity {
     private String visible;
 
     /**
-     * 菜单状态（0正常 1停用）
+     * 菜单状态（0显示 1隐藏）
      */
     private String status;
 

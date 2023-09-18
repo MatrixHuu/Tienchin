@@ -1,23 +1,22 @@
 package org.javaboy.tienchin.channel.domain.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import org.hibernate.validator.constraints.Range;
 import org.javaboy.tienchin.common.core.domain.BaseEntity;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 /**
- * @author xyma
- * @version 1.0
- * @data 2023/7/13 14:14
+ * @author 江南一点雨
+ * @微信公众号 江南一点雨
+ * @网站 http://www.itboyhub.com
+ * @国际站 http://www.javaboy.org
+ * @微信 a_java_boy
+ * @GitHub https://github.com/lenve
+ * @Gitee https://gitee.com/lenve
  */
 public class ChannelVO extends BaseEntity {
-
     private Integer channelId;
 
     /**
@@ -29,9 +28,8 @@ public class ChannelVO extends BaseEntity {
     /**
      * 渠道状态
      */
-
-    @Max(value = 1, message = "{channel.status.invalid}")
-    @Min(value = 0, message = "{channel.status.invalid}")
+    @Max(value = 1,message = "{channel.status.invalid}")
+    @Min(value = 0,message = "{channel.status.invalid}")
     @NotNull(message = "{channel.status.notnull}")
     private Byte status;
 
@@ -41,12 +39,14 @@ public class ChannelVO extends BaseEntity {
     private String remark;
 
     /**
-     * 渠道类型：1线上渠道  2线下渠道
+     * 渠道类型：1 线上渠道 2 线下渠道
      */
-    @Max(value = 2, message = "{channel.type.invalid}")
-    @Min(value = 1, message = "{channel.type.invalid}")
+
+    @Max(value = 2,message = "{channel.type.invalid}")
+    @Min(value = 1,message = "{channel.type.invalid}")
     @NotNull(message = "{channel.type.notnull}")
     private Integer type;
+
 
     private Integer delFlag;
 
@@ -98,5 +98,17 @@ public class ChannelVO extends BaseEntity {
 
     public void setDelFlag(Integer delFlag) {
         this.delFlag = delFlag;
+    }
+
+    @Override
+    public String toString() {
+        return "ChannelVO{" +
+                "channelId=" + channelId +
+                ", channelName='" + channelName + '\'' +
+                ", status=" + status +
+                ", remark='" + remark + '\'' +
+                ", type=" + type +
+                ", delFlag=" + delFlag +
+                '}';
     }
 }

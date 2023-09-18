@@ -1,10 +1,10 @@
 package org.javaboy.tienchin.web.controller.system;
 
+import org.javaboy.tienchin.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.javaboy.tienchin.common.config.TienChinConfig;
-import org.javaboy.tienchin.common.utils.StringUtils;
 
 /**
  * 首页

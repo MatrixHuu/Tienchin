@@ -1,13 +1,12 @@
 package org.javaboy.tienchin.common.utils.ip;
 
+import org.javaboy.tienchin.common.utils.http.HttpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import org.javaboy.tienchin.common.config.TienChinConfig;
 import org.javaboy.tienchin.common.constant.Constants;
 import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.common.utils.http.HttpUtils;
 
 /**
  * 获取地址类
@@ -35,7 +34,7 @@ public class AddressUtils {
                     log.error("获取地理位置异常 {}", ip);
                     return UNKNOWN;
                 }
-                JSONObject obj = JSON.parseObject(rspStr);
+                JSONObject obj = JSONObject.parseObject(rspStr);
                 String region = obj.getString("pro");
                 String city = obj.getString("city");
                 return String.format("%s %s", region, city);

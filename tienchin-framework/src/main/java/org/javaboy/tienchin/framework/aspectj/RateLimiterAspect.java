@@ -8,6 +8,10 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.javaboy.tienchin.common.enums.LimitType;
+import org.javaboy.tienchin.common.utils.ServletUtils;
+import org.javaboy.tienchin.common.utils.StringUtils;
+import org.javaboy.tienchin.common.utils.ip.IpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
 import org.javaboy.tienchin.common.annotation.RateLimiter;
-import org.javaboy.tienchin.common.enums.LimitType;
 import org.javaboy.tienchin.common.exception.ServiceException;
-import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.common.utils.ip.IpUtils;
 
 /**
  * 限流处理
@@ -67,7 +68,7 @@ public class RateLimiterAspect {
     public String getCombineKey(RateLimiter rateLimiter, JoinPoint point) {
         StringBuffer stringBuffer = new StringBuffer(rateLimiter.key());
         if (rateLimiter.limitType() == LimitType.IP) {
-            stringBuffer.append(IpUtils.getIpAddr()).append("-");
+            stringBuffer.append(IpUtils.getIpAddr(ServletUtils.getRequest())).append("-");
         }
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();

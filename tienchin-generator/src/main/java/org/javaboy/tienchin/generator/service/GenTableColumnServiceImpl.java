@@ -2,11 +2,11 @@ package org.javaboy.tienchin.generator.service;
 
 import java.util.List;
 
+import org.javaboy.tienchin.generator.mapper.GenTableColumnMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.javaboy.tienchin.common.core.text.Convert;
 import org.javaboy.tienchin.generator.domain.GenTableColumn;
-import org.javaboy.tienchin.generator.mapper.GenTableColumnMapper;
 
 /**
  * 业务字段 服务层实现

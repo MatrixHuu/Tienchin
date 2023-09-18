@@ -31,7 +31,7 @@ public interface ISysConfigService {
      *
      * @return true开启，false关闭
      */
-    public boolean selectCaptchaEnabled();
+    public boolean selectCaptchaOnOff();
 
     /**
      * 查询参数配置列表
@@ -85,5 +85,5 @@ public interface ISysConfigService {
      * @param config 参数信息
      * @return 结果
      */
-    public boolean checkConfigKeyUnique(SysConfig config);
+    public String checkConfigKeyUnique(SysConfig config);
 }

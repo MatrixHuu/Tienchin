@@ -5,14 +5,14 @@ import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
-import com.alibaba.fastjson2.JSON;
-import org.javaboy.tienchin.common.constant.HttpStatus;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.utils.ServletUtils;
 import org.javaboy.tienchin.common.utils.StringUtils;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
+import com.alibaba.fastjson.JSON;
+import org.javaboy.tienchin.common.constant.HttpStatus;
 
 /**
  * 认证失败处理类 返回未授权

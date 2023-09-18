@@ -2,13 +2,12 @@ package org.javaboy.tienchin.framework.web.service;
 
 import java.util.Set;
 
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.javaboy.tienchin.common.core.domain.entity.SysRole;
 import org.javaboy.tienchin.common.core.domain.model.LoginUser;
 import org.javaboy.tienchin.common.utils.SecurityUtils;
 import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.framework.security.context.PermissionContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 /**
  * RuoYi首创 自定义权限实现，ss取自SpringSecurity首字母
@@ -45,7 +44,6 @@ public class PermissionService {
         if (StringUtils.isNull(loginUser) || CollectionUtils.isEmpty(loginUser.getPermissions())) {
             return false;
         }
-        PermissionContextHolder.setContext(permission);
         return hasPermissions(loginUser.getPermissions(), permission);
     }
 
@@ -73,7 +71,6 @@ public class PermissionService {
         if (StringUtils.isNull(loginUser) || CollectionUtils.isEmpty(loginUser.getPermissions())) {
             return false;
         }
-        PermissionContextHolder.setContext(permissions);
         Set<String> authorities = loginUser.getPermissions();
         for (String permission : permissions.split(PERMISSION_DELIMETER)) {
             if (permission != null && hasPermissions(authorities, permission)) {

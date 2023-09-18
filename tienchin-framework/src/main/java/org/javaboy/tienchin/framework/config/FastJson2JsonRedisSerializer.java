@@ -1,12 +1,16 @@
 package org.javaboy.tienchin.framework.config;
 
-import java.nio.charset.Charset;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONReader;
-import com.alibaba.fastjson2.JSONWriter;
+import com.alibaba.fastjson.parser.ParserConfig;
+import org.springframework.util.Assert;
+
+import java.nio.charset.Charset;
 
 /**
  * Redis使用FastJson序列化
@@ -14,9 +18,16 @@ import com.alibaba.fastjson2.JSONWriter;
  * @author tienchin
  */
 public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
+    @SuppressWarnings("unused")
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
     private Class<T> clazz;
+
+    static {
+        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
+    }
 
     public FastJson2JsonRedisSerializer(Class<T> clazz) {
         super();
@@ -28,7 +39,7 @@ public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
         if (t == null) {
             return new byte[0];
         }
-        return JSON.toJSONString(t, JSONWriter.Feature.WriteClassName).getBytes(DEFAULT_CHARSET);
+        return JSON.toJSONString(t, SerializerFeature.WriteClassName).getBytes(DEFAULT_CHARSET);
     }
 
     @Override
@@ -38,6 +49,15 @@ public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
         }
         String str = new String(bytes, DEFAULT_CHARSET);
 
-        return JSON.parseObject(str, clazz, JSONReader.Feature.SupportAutoType);
+        return JSON.parseObject(str, clazz);
+    }
+
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        Assert.notNull(objectMapper, "'objectMapper' must not be null");
+        this.objectMapper = objectMapper;
+    }
+
+    protected JavaType getJavaType(Class<?> clazz) {
+        return TypeFactory.defaultInstance().constructType(clazz);
     }
 }

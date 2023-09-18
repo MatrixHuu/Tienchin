@@ -1,13 +1,7 @@
 package org.javaboy.tienchin.system.service.impl;
 
-import java.util.Collection;
-import java.util.List;
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.javaboy.tienchin.common.annotation.DataSource;
-import org.javaboy.tienchin.common.constant.CacheConstants;
+import org.javaboy.tienchin.common.constant.Constants;
 import org.javaboy.tienchin.common.constant.UserConstants;
 import org.javaboy.tienchin.common.core.redis.RedisCache;
 import org.javaboy.tienchin.common.core.text.Convert;
@@ -17,6 +11,12 @@ import org.javaboy.tienchin.common.utils.StringUtils;
 import org.javaboy.tienchin.system.domain.SysConfig;
 import org.javaboy.tienchin.system.mapper.SysConfigMapper;
 import org.javaboy.tienchin.system.service.ISysConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 参数配置 服务层实现
@@ -81,12 +81,12 @@ public class SysConfigServiceImpl implements ISysConfigService {
      * @return true开启，false关闭
      */
     @Override
-    public boolean selectCaptchaEnabled() {
-        String captchaEnabled = selectConfigByKey("sys.account.captchaEnabled");
-        if (StringUtils.isEmpty(captchaEnabled)) {
+    public boolean selectCaptchaOnOff() {
+        String captchaOnOff = selectConfigByKey("sys.account.captchaOnOff");
+        if (StringUtils.isEmpty(captchaOnOff)) {
             return true;
         }
-        return Convert.toBool(captchaEnabled);
+        return Convert.toBool(captchaOnOff);
     }
 
     /**
@@ -123,11 +123,6 @@ public class SysConfigServiceImpl implements ISysConfigService {
      */
     @Override
     public int updateConfig(SysConfig config) {
-        SysConfig temp = configMapper.selectConfigById(config.getConfigId());
-        if (!StringUtils.equals(temp.getConfigKey(), config.getConfigKey())) {
-            redisCache.deleteObject(getCacheKey(temp.getConfigKey()));
-        }
-
         int row = configMapper.updateConfig(config);
         if (row > 0) {
             redisCache.setCacheObject(getCacheKey(config.getConfigKey()), config.getConfigValue());
@@ -168,7 +163,7 @@ public class SysConfigServiceImpl implements ISysConfigService {
      */
     @Override
     public void clearConfigCache() {
-        Collection<String> keys = redisCache.keys(CacheConstants.SYS_CONFIG_KEY + "*");
+        Collection<String> keys = redisCache.keys(Constants.SYS_CONFIG_KEY + "*");
         redisCache.deleteObject(keys);
     }
 
@@ -188,7 +183,7 @@ public class SysConfigServiceImpl implements ISysConfigService {
      * @return 结果
      */
     @Override
-    public boolean checkConfigKeyUnique(SysConfig config) {
+    public String checkConfigKeyUnique(SysConfig config) {
         Long configId = StringUtils.isNull(config.getConfigId()) ? -1L : config.getConfigId();
         SysConfig info = configMapper.checkConfigKeyUnique(config.getConfigKey());
         if (StringUtils.isNotNull(info) && info.getConfigId().longValue() != configId.longValue()) {
@@ -204,6 +199,6 @@ public class SysConfigServiceImpl implements ISysConfigService {
      * @return 缓存键key
      */
     private String getCacheKey(String configKey) {
-        return CacheConstants.SYS_CONFIG_KEY + configKey;
+        return Constants.SYS_CONFIG_KEY + configKey;
     }
 }

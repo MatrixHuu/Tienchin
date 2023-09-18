@@ -17,13 +17,15 @@ import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.javaboy.tienchin.generator.mapper.GenTableColumnMapper;
+import org.javaboy.tienchin.generator.mapper.GenTableMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.javaboy.tienchin.common.constant.Constants;
 import org.javaboy.tienchin.common.constant.GenConstants;
 import org.javaboy.tienchin.common.core.text.CharsetKit;
@@ -32,8 +34,6 @@ import org.javaboy.tienchin.common.utils.SecurityUtils;
 import org.javaboy.tienchin.common.utils.StringUtils;
 import org.javaboy.tienchin.generator.domain.GenTable;
 import org.javaboy.tienchin.generator.domain.GenTableColumn;
-import org.javaboy.tienchin.generator.mapper.GenTableColumnMapper;
-import org.javaboy.tienchin.generator.mapper.GenTableMapper;
 import org.javaboy.tienchin.generator.util.GenUtils;
 import org.javaboy.tienchin.generator.util.VelocityInitializer;
 import org.javaboy.tienchin.generator.util.VelocityUtils;
@@ -359,7 +359,7 @@ public class GenTableServiceImpl implements IGenTableService {
     public void validateEdit(GenTable genTable) {
         if (GenConstants.TPL_TREE.equals(genTable.getTplCategory())) {
             String options = JSON.toJSONString(genTable.getParams());
-            JSONObject paramsObj = JSON.parseObject(options);
+            JSONObject paramsObj = JSONObject.parseObject(options);
             if (StringUtils.isEmpty(paramsObj.getString(GenConstants.TREE_CODE))) {
                 throw new ServiceException("树编码字段不能为空");
             } else if (StringUtils.isEmpty(paramsObj.getString(GenConstants.TREE_PARENT_CODE))) {
@@ -422,7 +422,7 @@ public class GenTableServiceImpl implements IGenTableService {
      * @param genTable 设置后的生成对象
      */
     public void setTableFromOptions(GenTable genTable) {
-        JSONObject paramsObj = JSON.parseObject(genTable.getOptions());
+        JSONObject paramsObj = JSONObject.parseObject(genTable.getOptions());
         if (StringUtils.isNotNull(paramsObj)) {
             String treeCode = paramsObj.getString(GenConstants.TREE_CODE);
             String treeParentCode = paramsObj.getString(GenConstants.TREE_PARENT_CODE);

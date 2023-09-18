@@ -3,8 +3,7 @@ package org.javaboy.tienchin.common.utils;
 import java.util.Collection;
 import java.util.List;
 
-import com.alibaba.fastjson2.JSONArray;
-import org.javaboy.tienchin.common.constant.CacheConstants;
+import org.javaboy.tienchin.common.constant.Constants;
 import org.javaboy.tienchin.common.core.domain.entity.SysDictData;
 import org.javaboy.tienchin.common.core.redis.RedisCache;
 import org.javaboy.tienchin.common.utils.spring.SpringUtils;
@@ -37,9 +36,9 @@ public class DictUtils {
      * @return dictDatas 字典数据列表
      */
     public static List<SysDictData> getDictCache(String key) {
-        JSONArray arrayCache = SpringUtils.getBean(RedisCache.class).getCacheObject(getCacheKey(key));
-        if (StringUtils.isNotNull(arrayCache)) {
-            return arrayCache.toList(SysDictData.class);
+        Object cacheObj = SpringUtils.getBean(RedisCache.class).getCacheObject(getCacheKey(key));
+        if (StringUtils.isNotNull(cacheObj)) {
+            return StringUtils.cast(cacheObj);
         }
         return null;
     }
@@ -78,21 +77,19 @@ public class DictUtils {
         StringBuilder propertyString = new StringBuilder();
         List<SysDictData> datas = getDictCache(dictType);
 
-        if (StringUtils.isNotNull(datas)) {
-            if (StringUtils.containsAny(separator, dictValue)) {
-                for (SysDictData dict : datas) {
-                    for (String value : dictValue.split(separator)) {
-                        if (value.equals(dict.getDictValue())) {
-                            propertyString.append(dict.getDictLabel()).append(separator);
-                            break;
-                        }
+        if (StringUtils.containsAny(separator, dictValue) && StringUtils.isNotEmpty(datas)) {
+            for (SysDictData dict : datas) {
+                for (String value : dictValue.split(separator)) {
+                    if (value.equals(dict.getDictValue())) {
+                        propertyString.append(dict.getDictLabel()).append(separator);
+                        break;
                     }
                 }
-            } else {
-                for (SysDictData dict : datas) {
-                    if (dictValue.equals(dict.getDictValue())) {
-                        return dict.getDictLabel();
-                    }
+            }
+        } else {
+            for (SysDictData dict : datas) {
+                if (dictValue.equals(dict.getDictValue())) {
+                    return dict.getDictLabel();
                 }
             }
         }
@@ -143,7 +140,7 @@ public class DictUtils {
      * 清空字典缓存
      */
     public static void clearDictCache() {
-        Collection<String> keys = SpringUtils.getBean(RedisCache.class).keys(CacheConstants.SYS_DICT_KEY + "*");
+        Collection<String> keys = SpringUtils.getBean(RedisCache.class).keys(Constants.SYS_DICT_KEY + "*");
         SpringUtils.getBean(RedisCache.class).deleteObject(keys);
     }
 
@@ -154,6 +151,6 @@ public class DictUtils {
      * @return 缓存键key
      */
     public static String getCacheKey(String configKey) {
-        return CacheConstants.SYS_DICT_KEY + configKey;
+        return Constants.SYS_DICT_KEY + configKey;
     }
 }

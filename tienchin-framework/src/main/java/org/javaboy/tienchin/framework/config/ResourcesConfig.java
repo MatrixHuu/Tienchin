@@ -1,20 +1,17 @@
 package org.javaboy.tienchin.framework.config;
 
-import java.util.concurrent.TimeUnit;
-
+import org.javaboy.tienchin.common.config.TienChinConfig;
+import org.javaboy.tienchin.common.constant.Constants;
+import org.javaboy.tienchin.framework.interceptor.RepeatSubmitInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.CacheControl;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.javaboy.tienchin.common.config.TienChinConfig;
-import org.javaboy.tienchin.common.constant.Constants;
-import org.javaboy.tienchin.framework.interceptor.RepeatSubmitInterceptor;
 
 /**
  * 通用配置
@@ -34,9 +31,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
 
         /** swagger配置 */
         registry.addResourceHandler("/swagger-ui/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
-                .setCacheControl(CacheControl.maxAge(5, TimeUnit.HOURS).cachePublic());
-        ;
+                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/");
     }
 
     /**
@@ -46,7 +41,6 @@ public class ResourcesConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(repeatSubmitInterceptor).addPathPatterns("/**");
     }
-
 
     /**
      * 跨域配置
@@ -74,4 +68,5 @@ public class ResourcesConfig implements WebMvcConfigurer {
     CustomMethodSecurityExpressionHandler customMethodSecurityExpressionHandler() {
         return new CustomMethodSecurityExpressionHandler();
     }
+
 }

@@ -1,15 +1,8 @@
 package org.javaboy.tienchin.framework.web.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.javaboy.tienchin.common.constant.CacheConstants;
-import org.javaboy.tienchin.common.constant.Constants;
-import org.javaboy.tienchin.common.constant.UserConstants;
 import org.javaboy.tienchin.common.core.domain.entity.SysUser;
 import org.javaboy.tienchin.common.core.domain.model.RegisterBody;
 import org.javaboy.tienchin.common.core.redis.RedisCache;
-import org.javaboy.tienchin.common.exception.user.CaptchaException;
-import org.javaboy.tienchin.common.exception.user.CaptchaExpireException;
 import org.javaboy.tienchin.common.utils.MessageUtils;
 import org.javaboy.tienchin.common.utils.SecurityUtils;
 import org.javaboy.tienchin.common.utils.StringUtils;
@@ -17,6 +10,12 @@ import org.javaboy.tienchin.framework.manager.AsyncManager;
 import org.javaboy.tienchin.framework.manager.factory.AsyncFactory;
 import org.javaboy.tienchin.system.service.ISysConfigService;
 import org.javaboy.tienchin.system.service.ISysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.javaboy.tienchin.common.constant.Constants;
+import org.javaboy.tienchin.common.constant.UserConstants;
+import org.javaboy.tienchin.common.exception.user.CaptchaException;
+import org.javaboy.tienchin.common.exception.user.CaptchaExpireException;
 
 /**
  * 注册校验方法
@@ -39,12 +38,10 @@ public class SysRegisterService {
      */
     public String register(RegisterBody registerBody) {
         String msg = "", username = registerBody.getUsername(), password = registerBody.getPassword();
-        SysUser sysUser = new SysUser();
-        sysUser.setUserName(username);
 
+        boolean captchaOnOff = configService.selectCaptchaOnOff();
         // 验证码开关
-        boolean captchaEnabled = configService.selectCaptchaEnabled();
-        if (captchaEnabled) {
+        if (captchaOnOff) {
             validateCaptcha(username, registerBody.getCode(), registerBody.getUuid());
         }
 
@@ -58,16 +55,19 @@ public class SysRegisterService {
         } else if (password.length() < UserConstants.PASSWORD_MIN_LENGTH
                 || password.length() > UserConstants.PASSWORD_MAX_LENGTH) {
             msg = "密码长度必须在5到20个字符之间";
-        } else if (!userService.checkUserNameUnique(sysUser)) {
+        } else if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(username))) {
             msg = "保存用户'" + username + "'失败，注册账号已存在";
         } else {
+            SysUser sysUser = new SysUser();
+            sysUser.setUserName(username);
             sysUser.setNickName(username);
-            sysUser.setPassword(SecurityUtils.encryptPassword(password));
+            sysUser.setPassword(SecurityUtils.encryptPassword(registerBody.getPassword()));
             boolean regFlag = userService.registerUser(sysUser);
             if (!regFlag) {
                 msg = "注册失败,请联系系统管理人员";
             } else {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.REGISTER, MessageUtils.message("user.register.success")));
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.REGISTER,
+                        MessageUtils.message("user.register.success")));
             }
         }
         return msg;
@@ -82,7 +82,7 @@ public class SysRegisterService {
      * @return 结果
      */
     public void validateCaptcha(String username, String code, String uuid) {
-        String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
+        String verifyKey = Constants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
         String captcha = redisCache.getCacheObject(verifyKey);
         redisCache.deleteObject(verifyKey);
         if (captcha == null) {

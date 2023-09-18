@@ -4,6 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import org.javaboy.tienchin.common.annotation.Log;
+import org.javaboy.tienchin.common.core.controller.BaseController;
+import org.javaboy.tienchin.common.core.domain.AjaxResult;
+import org.javaboy.tienchin.common.core.domain.entity.SysDictData;
+import org.javaboy.tienchin.common.enums.BusinessType;
+import org.javaboy.tienchin.common.utils.StringUtils;
+import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
+import org.javaboy.tienchin.system.service.ISysDictDataService;
+import org.javaboy.tienchin.system.service.ISysDictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -15,16 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.javaboy.tienchin.common.annotation.Log;
-import org.javaboy.tienchin.common.core.controller.BaseController;
-import org.javaboy.tienchin.common.core.domain.AjaxResult;
-import org.javaboy.tienchin.common.core.domain.entity.SysDictData;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
-import org.javaboy.tienchin.common.enums.BusinessType;
-import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
-import org.javaboy.tienchin.system.service.ISysDictDataService;
-import org.javaboy.tienchin.system.service.ISysDictTypeService;
 
 /**
  * 数据字典信息
@@ -63,7 +63,7 @@ public class SysDictDataController extends BaseController {
     @PreAuthorize("hasPermission('system:dict:query')")
     @GetMapping(value = "/{dictCode}")
     public AjaxResult getInfo(@PathVariable Long dictCode) {
-        return success(dictDataService.selectDictDataById(dictCode));
+        return AjaxResult.success(dictDataService.selectDictDataById(dictCode));
     }
 
     /**
@@ -75,7 +75,7 @@ public class SysDictDataController extends BaseController {
         if (StringUtils.isNull(data)) {
             data = new ArrayList<SysDictData>();
         }
-        return success(data);
+        return AjaxResult.success(data);
     }
 
     /**

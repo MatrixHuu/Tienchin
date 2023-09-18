@@ -4,6 +4,11 @@ import java.beans.PropertyEditorSupport;
 import java.util.Date;
 import java.util.List;
 
+import org.javaboy.tienchin.common.utils.DateUtils;
+import org.javaboy.tienchin.common.utils.PageUtils;
+import org.javaboy.tienchin.common.utils.SecurityUtils;
+import org.javaboy.tienchin.common.utils.StringUtils;
+import org.javaboy.tienchin.common.utils.sql.SqlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.WebDataBinder;
@@ -16,11 +21,6 @@ import org.javaboy.tienchin.common.core.domain.model.LoginUser;
 import org.javaboy.tienchin.common.core.page.PageDomain;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
 import org.javaboy.tienchin.common.core.page.TableSupport;
-import org.javaboy.tienchin.common.utils.DateUtils;
-import org.javaboy.tienchin.common.utils.PageUtils;
-import org.javaboy.tienchin.common.utils.SecurityUtils;
-import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.common.utils.sql.SqlUtil;
 
 /**
  * web层通用数据处理
@@ -104,24 +104,10 @@ public class BaseController {
     }
 
     /**
-     * 返回成功消息
-     */
-    public AjaxResult success(Object data) {
-        return AjaxResult.success(data);
-    }
-
-    /**
      * 返回失败消息
      */
     public AjaxResult error(String message) {
         return AjaxResult.error(message);
-    }
-
-    /**
-     * 返回警告消息
-     */
-    public AjaxResult warn(String message) {
-        return AjaxResult.warn(message);
     }
 
     /**

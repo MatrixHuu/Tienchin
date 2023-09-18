@@ -7,14 +7,14 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.javaboy.tienchin.common.utils.StringUtils;
+import org.javaboy.tienchin.framework.datasource.DynamicDataSourceContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.javaboy.tienchin.common.annotation.DataSource;
-import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.framework.datasource.DynamicDataSourceContextHolder;
 
 /**
  * 多数据源处理

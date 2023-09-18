@@ -3,12 +3,6 @@ package org.javaboy.tienchin.web.controller.system;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.javaboy.tienchin.common.constant.Constants;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.domain.entity.SysMenu;
 import org.javaboy.tienchin.common.core.domain.entity.SysUser;
@@ -17,6 +11,12 @@ import org.javaboy.tienchin.common.utils.SecurityUtils;
 import org.javaboy.tienchin.framework.web.service.SysLoginService;
 import org.javaboy.tienchin.framework.web.service.SysPermissionService;
 import org.javaboy.tienchin.system.service.ISysMenuService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.javaboy.tienchin.common.constant.Constants;
 
 /**
  * 登录验证

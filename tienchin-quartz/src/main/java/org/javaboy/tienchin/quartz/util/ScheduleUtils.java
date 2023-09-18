@@ -1,5 +1,9 @@
 package org.javaboy.tienchin.quartz.util;
 
+import org.javaboy.tienchin.common.constant.Constants;
+import org.javaboy.tienchin.common.exception.job.TaskException;
+import org.javaboy.tienchin.common.utils.StringUtils;
+import org.javaboy.tienchin.quartz.domain.SysJob;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.Job;
@@ -10,13 +14,8 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
-import org.javaboy.tienchin.common.constant.Constants;
 import org.javaboy.tienchin.common.constant.ScheduleConstants;
-import org.javaboy.tienchin.common.exception.job.TaskException;
-import org.javaboy.tienchin.common.exception.job.TaskException.Code;
-import org.javaboy.tienchin.common.utils.StringUtils;
 import org.javaboy.tienchin.common.utils.spring.SpringUtils;
-import org.javaboy.tienchin.quartz.domain.SysJob;
 
 /**
  * 定时任务工具类
@@ -76,11 +75,7 @@ public class ScheduleUtils {
             scheduler.deleteJob(getJobKey(jobId, jobGroup));
         }
 
-        // 判断任务是否过期
-        if (StringUtils.isNotNull(CronUtils.getNextExecution(job.getCronExpression()))) {
-            // 执行调度任务
-            scheduler.scheduleJob(jobDetail, trigger);
-        }
+        scheduler.scheduleJob(jobDetail, trigger);
 
         // 暂停任务
         if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue())) {
@@ -104,7 +99,7 @@ public class ScheduleUtils {
                 return cb.withMisfireHandlingInstructionDoNothing();
             default:
                 throw new TaskException("The task misfire policy '" + job.getMisfirePolicy()
-                        + "' cannot be used in cron schedule tasks", Code.CONFIG_ERROR);
+                        + "' cannot be used in cron schedule tasks", TaskException.Code.CONFIG_ERROR);
         }
     }
 
@@ -121,8 +116,6 @@ public class ScheduleUtils {
             return StringUtils.containsAnyIgnoreCase(invokeTarget, Constants.JOB_WHITELIST_STR);
         }
         Object obj = SpringUtils.getBean(StringUtils.split(invokeTarget, ".")[0]);
-        String beanPackageName = obj.getClass().getPackage().getName();
-        return StringUtils.containsAnyIgnoreCase(beanPackageName, Constants.JOB_WHITELIST_STR)
-                && !StringUtils.containsAnyIgnoreCase(beanPackageName, Constants.JOB_ERROR_STR);
+        return StringUtils.containsAnyIgnoreCase(obj.getClass().getPackage().getName(), Constants.JOB_WHITELIST_STR);
     }
 }

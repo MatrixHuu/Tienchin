@@ -35,7 +35,7 @@ public class CaptchaConfig {
         // 验证码文本字符大小 默认为40
         properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_SIZE, "38");
         // KAPTCHA_SESSION_KEY
-        //将来生成验证码的时候，会自动将验证码存入session中
+        //将来生成验证码的时候，会自动将验证码文本存入 session 中
         properties.setProperty(KAPTCHA_SESSION_CONFIG_KEY, "kaptchaCode");
         // 验证码文本字符长度 默认为5
         properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_LENGTH, "4");

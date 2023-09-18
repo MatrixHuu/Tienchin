@@ -3,6 +3,10 @@ package org.javaboy.tienchin.quartz.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import org.javaboy.tienchin.common.core.controller.BaseController;
+import org.javaboy.tienchin.common.enums.BusinessType;
+import org.javaboy.tienchin.common.utils.StringUtils;
+import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,13 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.javaboy.tienchin.common.annotation.Log;
 import org.javaboy.tienchin.common.constant.Constants;
-import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
-import org.javaboy.tienchin.common.enums.BusinessType;
 import org.javaboy.tienchin.common.exception.job.TaskException;
-import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
 import org.javaboy.tienchin.quartz.domain.SysJob;
 import org.javaboy.tienchin.quartz.service.ISysJobService;
 import org.javaboy.tienchin.quartz.util.CronUtils;
@@ -68,7 +68,7 @@ public class SysJobController extends BaseController {
     @PreAuthorize("hasPermission('monitor:job:query')")
     @GetMapping(value = "/{jobId}")
     public AjaxResult getInfo(@PathVariable("jobId") Long jobId) {
-        return success(jobService.selectJobById(jobId));
+        return AjaxResult.success(jobService.selectJobById(jobId));
     }
 
     /**
@@ -138,8 +138,8 @@ public class SysJobController extends BaseController {
     @Log(title = "定时任务", businessType = BusinessType.UPDATE)
     @PutMapping("/run")
     public AjaxResult run(@RequestBody SysJob job) throws SchedulerException {
-        boolean result = jobService.run(job);
-        return result ? success() : error("任务不存在或已过期！");
+        jobService.run(job);
+        return AjaxResult.success();
     }
 
     /**
@@ -150,6 +150,6 @@ public class SysJobController extends BaseController {
     @DeleteMapping("/{jobIds}")
     public AjaxResult remove(@PathVariable Long[] jobIds) throws SchedulerException, TaskException {
         jobService.deleteJobByIds(jobIds);
-        return success();
+        return AjaxResult.success();
     }
 }

@@ -107,7 +107,7 @@ public interface SysUserMapper {
      * @param userName 用户名称
      * @return 结果
      */
-    public SysUser checkUserNameUnique(String userName);
+    public int checkUserNameUnique(String userName);
 
     /**
      * 校验手机号码是否唯一
@@ -124,4 +124,6 @@ public interface SysUserMapper {
      * @return 结果
      */
     public SysUser checkEmailUnique(String email);
+
+    List<SysUser> getUsersByDeptId(Long deptId);
 }

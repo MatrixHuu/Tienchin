@@ -1,5 +1,10 @@
 package org.javaboy.tienchin.framework.web.service;
 
+import org.javaboy.tienchin.common.core.domain.entity.SysUser;
+import org.javaboy.tienchin.common.core.domain.model.LoginUser;
+import org.javaboy.tienchin.common.enums.UserStatus;
+import org.javaboy.tienchin.common.utils.StringUtils;
+import org.javaboy.tienchin.system.service.ISysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.javaboy.tienchin.common.core.domain.entity.SysUser;
-import org.javaboy.tienchin.common.core.domain.model.LoginUser;
-import org.javaboy.tienchin.common.enums.UserStatus;
 import org.javaboy.tienchin.common.exception.ServiceException;
-import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.system.service.ISysUserService;
 
 /**
  * 用户验证处理
@@ -25,9 +25,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private ISysUserService userService;
-
-    @Autowired
-    private SysPasswordService passwordService;
 
     @Autowired
     private SysPermissionService permissionService;
@@ -45,8 +42,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             log.info("登录用户：{} 已被停用.", username);
             throw new ServiceException("对不起，您的账号：" + username + " 已停用");
         }
-
-        passwordService.validate(user);
 
         return createLoginUser(user);
     }

@@ -8,7 +8,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.javaboy.tienchin.common.annotation.Excel;
-import org.javaboy.tienchin.common.annotation.Excel.ColumnType;
 import org.javaboy.tienchin.common.constant.ScheduleConstants;
 import org.javaboy.tienchin.common.core.domain.BaseEntity;
 import org.javaboy.tienchin.common.utils.StringUtils;
@@ -25,7 +24,7 @@ public class SysJob extends BaseEntity {
     /**
      * 任务ID
      */
-    @Excel(name = "任务序号", cellType = ColumnType.NUMERIC)
+    @Excel(name = "任务序号", cellType = Excel.ColumnType.NUMERIC)
     private Long jobId;
 
     /**

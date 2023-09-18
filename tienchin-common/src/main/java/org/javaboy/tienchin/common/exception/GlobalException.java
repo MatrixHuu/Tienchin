@@ -6,6 +6,7 @@ package org.javaboy.tienchin.common.exception;
  * @author tienchin
  */
 public class GlobalException extends RuntimeException {
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -39,7 +40,6 @@ public class GlobalException extends RuntimeException {
         return this;
     }
 
-    @Override
     public String getMessage() {
         return message;
     }

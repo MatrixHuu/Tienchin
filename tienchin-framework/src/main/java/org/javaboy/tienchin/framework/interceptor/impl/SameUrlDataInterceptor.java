@@ -5,16 +5,16 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 
+import org.javaboy.tienchin.common.core.redis.RedisCache;
+import org.javaboy.tienchin.common.utils.StringUtils;
+import org.javaboy.tienchin.common.utils.http.HttpHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.javaboy.tienchin.common.annotation.RepeatSubmit;
-import org.javaboy.tienchin.common.constant.CacheConstants;
-import org.javaboy.tienchin.common.core.redis.RedisCache;
+import org.javaboy.tienchin.common.constant.Constants;
 import org.javaboy.tienchin.common.filter.RepeatedlyRequestWrapper;
-import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.common.utils.http.HttpHelper;
 import org.javaboy.tienchin.framework.interceptor.RepeatSubmitInterceptor;
 
 /**
@@ -47,7 +47,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor {
 
         // body参数为空，获取Parameter的数据
         if (StringUtils.isEmpty(nowParams)) {
-            nowParams = JSON.toJSONString(request.getParameterMap());
+            nowParams = JSONObject.toJSONString(request.getParameterMap());
         }
         Map<String, Object> nowDataMap = new HashMap<String, Object>();
         nowDataMap.put(REPEAT_PARAMS, nowParams);
@@ -60,7 +60,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor {
         String submitKey = StringUtils.trimToEmpty(request.getHeader(header));
 
         // 唯一标识（指定key + url + 消息头）
-        String cacheRepeatKey = CacheConstants.REPEAT_SUBMIT_KEY + url + submitKey;
+        String cacheRepeatKey = Constants.REPEAT_SUBMIT_KEY + url + submitKey;
 
         Object sessionObj = redisCache.getCacheObject(cacheRepeatKey);
         if (sessionObj != null) {
@@ -74,6 +74,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor {
         }
         Map<String, Object> cacheMap = new HashMap<String, Object>();
         cacheMap.put(url, nowDataMap);
+        //cacheRepeatKey-{url:{repeat_params:xxxx,repeat_time:xxx}}
         redisCache.setCacheObject(cacheRepeatKey, cacheMap, annotation.interval(), TimeUnit.MILLISECONDS);
         return false;
     }

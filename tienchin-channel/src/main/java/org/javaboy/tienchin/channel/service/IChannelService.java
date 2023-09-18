@@ -12,8 +12,8 @@ import java.util.List;
  *  服务类
  * </p>
  *
- * @author xyma
- * @since 2023-07-13
+ * @author javaboy
+ * @since 2022-12-03
  */
 public interface IChannelService extends IService<Channel> {
 
@@ -23,8 +23,9 @@ public interface IChannelService extends IService<Channel> {
 
     AjaxResult updateChannel(ChannelVO channelVO);
 
-    Boolean deleteChannelByIds(Long[] channelIds);
+    boolean deleteChannelByIds(Long[] channelIds);
 
+    boolean importChannel(List<Channel> channelList, boolean updateSupport);
 
-    Boolean importChannel(List<Channel> channelList, boolean updateSupport);
+    AjaxResult channelAnalysisData(ChannelVO channelVO);
 }

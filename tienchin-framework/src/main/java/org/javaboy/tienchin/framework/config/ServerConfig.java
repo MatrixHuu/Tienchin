@@ -2,8 +2,8 @@ package org.javaboy.tienchin.framework.config;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.stereotype.Component;
 import org.javaboy.tienchin.common.utils.ServletUtils;
+import org.springframework.stereotype.Component;
 
 /**
  * 服务相关配置

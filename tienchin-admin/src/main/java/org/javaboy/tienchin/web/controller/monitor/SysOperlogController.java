@@ -3,6 +3,13 @@ package org.javaboy.tienchin.web.controller.monitor;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import org.javaboy.tienchin.common.annotation.Log;
+import org.javaboy.tienchin.common.core.controller.BaseController;
+import org.javaboy.tienchin.common.core.domain.AjaxResult;
+import org.javaboy.tienchin.common.enums.BusinessType;
+import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
+import org.javaboy.tienchin.system.domain.SysOperLog;
+import org.javaboy.tienchin.system.service.ISysOperLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,14 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.javaboy.tienchin.common.annotation.Log;
-import org.javaboy.tienchin.common.core.controller.BaseController;
-import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
-import org.javaboy.tienchin.common.enums.BusinessType;
-import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
-import org.javaboy.tienchin.system.domain.SysOperLog;
-import org.javaboy.tienchin.system.service.ISysOperLogService;
 
 /**
  * 操作日志记录
@@ -60,6 +60,6 @@ public class SysOperlogController extends BaseController {
     @DeleteMapping("/clean")
     public AjaxResult clean() {
         operLogService.cleanOperLog();
-        return success();
+        return AjaxResult.success();
     }
 }

@@ -2,6 +2,8 @@ package org.javaboy.tienchin.common.exception.file;
 
 import java.util.Arrays;
 
+import org.apache.commons.fileupload.FileUploadException;
+
 /**
  * 文件上传 误异常类
  *
@@ -15,7 +17,7 @@ public class InvalidExtensionException extends FileUploadException {
     private String filename;
 
     public InvalidExtensionException(String[] allowedExtension, String extension, String filename) {
-        super("文件[" + filename + "]后缀[" + extension + "]不正确，请上传" + Arrays.toString(allowedExtension) + "格式");
+        super("filename : [" + filename + "], extension : [" + extension + "], allowed extension : [" + Arrays.toString(allowedExtension) + "]");
         this.allowedExtension = allowedExtension;
         this.extension = extension;
         this.filename = filename;

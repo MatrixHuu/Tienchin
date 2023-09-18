@@ -477,12 +477,17 @@ public class Convert {
         valueStr = valueStr.trim().toLowerCase();
         switch (valueStr) {
             case "true":
-            case "yes":
-            case "ok":
-            case "1":
                 return true;
             case "false":
+                return false;
+            case "yes":
+                return true;
+            case "ok":
+                return true;
             case "no":
+                return false;
+            case "1":
+                return true;
             case "0":
                 return false;
             default:
@@ -605,7 +610,7 @@ public class Convert {
             return new BigDecimal((Long) value);
         }
         if (value instanceof Double) {
-            return BigDecimal.valueOf((Double) value);
+            return new BigDecimal((Double) value);
         }
         if (value instanceof Integer) {
             return new BigDecimal((Integer) value);
@@ -760,7 +765,7 @@ public class Convert {
      * @return 全角字符串.
      */
     public static String toSBC(String input, Set<Character> notConvertSet) {
-        char[] c = input.toCharArray();
+        char c[] = input.toCharArray();
         for (int i = 0; i < c.length; i++) {
             if (null != notConvertSet && notConvertSet.contains(c[i])) {
                 // 跳过不替换的字符
@@ -795,7 +800,7 @@ public class Convert {
      * @return 替换后的字符
      */
     public static String toDBC(String text, Set<Character> notConvertSet) {
-        char[] c = text.toCharArray();
+        char c[] = text.toCharArray();
         for (int i = 0; i < c.length; i++) {
             if (null != notConvertSet && notConvertSet.contains(c[i])) {
                 // 跳过不替换的字符

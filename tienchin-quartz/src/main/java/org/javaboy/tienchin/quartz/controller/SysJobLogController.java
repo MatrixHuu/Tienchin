@@ -3,6 +3,9 @@ package org.javaboy.tienchin.quartz.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import org.javaboy.tienchin.common.core.controller.BaseController;
+import org.javaboy.tienchin.common.enums.BusinessType;
+import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,11 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.javaboy.tienchin.common.annotation.Log;
-import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
-import org.javaboy.tienchin.common.enums.BusinessType;
-import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
 import org.javaboy.tienchin.quartz.domain.SysJobLog;
 import org.javaboy.tienchin.quartz.service.ISysJobLogService;
 
@@ -58,9 +58,9 @@ public class SysJobLogController extends BaseController {
      * 根据调度编号获取详细信息
      */
     @PreAuthorize("hasPermission('monitor:job:query')")
-    @GetMapping(value = "/{jobLogId}")
+    @GetMapping(value = "/{configId}")
     public AjaxResult getInfo(@PathVariable Long jobLogId) {
-        return success(jobLogService.selectJobLogById(jobLogId));
+        return AjaxResult.success(jobLogService.selectJobLogById(jobLogId));
     }
 
 
@@ -82,6 +82,6 @@ public class SysJobLogController extends BaseController {
     @DeleteMapping("/clean")
     public AjaxResult clean() {
         jobLogService.cleanJobLog();
-        return success();
+        return AjaxResult.success();
     }
 }

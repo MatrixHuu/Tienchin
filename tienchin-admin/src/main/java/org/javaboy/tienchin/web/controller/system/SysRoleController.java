@@ -3,6 +3,20 @@ package org.javaboy.tienchin.web.controller.system;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import org.javaboy.tienchin.common.annotation.Log;
+import org.javaboy.tienchin.common.core.controller.BaseController;
+import org.javaboy.tienchin.common.core.domain.AjaxResult;
+import org.javaboy.tienchin.common.core.domain.entity.SysRole;
+import org.javaboy.tienchin.common.core.domain.entity.SysUser;
+import org.javaboy.tienchin.common.core.domain.model.LoginUser;
+import org.javaboy.tienchin.common.enums.BusinessType;
+import org.javaboy.tienchin.common.utils.StringUtils;
+import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
+import org.javaboy.tienchin.framework.web.service.SysPermissionService;
+import org.javaboy.tienchin.framework.web.service.TokenService;
+import org.javaboy.tienchin.system.domain.SysUserRole;
+import org.javaboy.tienchin.system.service.ISysRoleService;
+import org.javaboy.tienchin.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -14,23 +28,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.javaboy.tienchin.common.annotation.Log;
-import org.javaboy.tienchin.common.core.controller.BaseController;
-import org.javaboy.tienchin.common.core.domain.AjaxResult;
-import org.javaboy.tienchin.common.core.domain.entity.SysDept;
-import org.javaboy.tienchin.common.core.domain.entity.SysRole;
-import org.javaboy.tienchin.common.core.domain.entity.SysUser;
-import org.javaboy.tienchin.common.core.domain.model.LoginUser;
+import org.javaboy.tienchin.common.constant.UserConstants;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
-import org.javaboy.tienchin.common.enums.BusinessType;
-import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
-import org.javaboy.tienchin.framework.web.service.SysPermissionService;
-import org.javaboy.tienchin.framework.web.service.TokenService;
-import org.javaboy.tienchin.system.domain.SysUserRole;
-import org.javaboy.tienchin.system.service.ISysDeptService;
-import org.javaboy.tienchin.system.service.ISysRoleService;
-import org.javaboy.tienchin.system.service.ISysUserService;
 
 /**
  * 角色信息
@@ -51,9 +50,6 @@ public class SysRoleController extends BaseController {
 
     @Autowired
     private ISysUserService userService;
-
-    @Autowired
-    private ISysDeptService deptService;
 
     @PreAuthorize("hasPermission('system:role:list')")
     @GetMapping("/list")
@@ -79,7 +75,7 @@ public class SysRoleController extends BaseController {
     @GetMapping(value = "/{roleId}")
     public AjaxResult getInfo(@PathVariable Long roleId) {
         roleService.checkRoleDataScope(roleId);
-        return success(roleService.selectRoleById(roleId));
+        return AjaxResult.success(roleService.selectRoleById(roleId));
     }
 
     /**
@@ -89,10 +85,10 @@ public class SysRoleController extends BaseController {
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysRole role) {
-        if (!roleService.checkRoleNameUnique(role)) {
-            return error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
-        } else if (!roleService.checkRoleKeyUnique(role)) {
-            return error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
+        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
+            return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
+        } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
+            return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setCreateBy(getUsername());
         return toAjax(roleService.insertRole(role));
@@ -108,10 +104,10 @@ public class SysRoleController extends BaseController {
     public AjaxResult edit(@Validated @RequestBody SysRole role) {
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
-        if (!roleService.checkRoleNameUnique(role)) {
-            return error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
-        } else if (!roleService.checkRoleKeyUnique(role)) {
-            return error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
+        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
+            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
+        } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
+            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setUpdateBy(getUsername());
 
@@ -123,9 +119,9 @@ public class SysRoleController extends BaseController {
                 loginUser.setUser(userService.selectUserByUserName(loginUser.getUser().getUserName()));
                 tokenService.setLoginUser(loginUser);
             }
-            return success();
+            return AjaxResult.success();
         }
-        return error("修改角色'" + role.getRoleName() + "'失败，请联系管理员");
+        return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，请联系管理员");
     }
 
     /**
@@ -169,7 +165,7 @@ public class SysRoleController extends BaseController {
     @PreAuthorize("hasPermission('system:role:query')")
     @GetMapping("/optionselect")
     public AjaxResult optionselect() {
-        return success(roleService.selectRoleAll());
+        return AjaxResult.success(roleService.selectRoleAll());
     }
 
     /**
@@ -223,17 +219,5 @@ public class SysRoleController extends BaseController {
     public AjaxResult selectAuthUserAll(Long roleId, Long[] userIds) {
         roleService.checkRoleDataScope(roleId);
         return toAjax(roleService.insertAuthUsers(roleId, userIds));
-    }
-
-    /**
-     * 获取对应角色部门树列表
-     */
-    @PreAuthorize("hasPermission('system:role:query')")
-    @GetMapping(value = "/deptTree/{roleId}")
-    public AjaxResult deptTree(@PathVariable("roleId") Long roleId) {
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("checkedKeys", deptService.selectDeptListByRoleId(roleId));
-        ajax.put("depts", deptService.selectDeptTreeList(new SysDept()));
-        return ajax;
     }
 }

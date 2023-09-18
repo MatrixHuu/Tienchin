@@ -5,17 +5,16 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.javaboy.tienchin.common.constant.CacheConstants;
-import org.javaboy.tienchin.common.constant.Constants;
 import org.javaboy.tienchin.common.core.domain.model.LoginUser;
 import org.javaboy.tienchin.common.core.redis.RedisCache;
 import org.javaboy.tienchin.common.utils.ServletUtils;
 import org.javaboy.tienchin.common.utils.StringUtils;
 import org.javaboy.tienchin.common.utils.ip.AddressUtils;
 import org.javaboy.tienchin.common.utils.ip.IpUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.javaboy.tienchin.common.constant.Constants;
 import org.javaboy.tienchin.common.utils.uuid.IdUtils;
 import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Claims;
@@ -142,7 +141,7 @@ public class TokenService {
      */
     public void setUserAgent(LoginUser loginUser) {
         UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
-        String ip = IpUtils.getIpAddr();
+        String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
         loginUser.setIpaddr(ip);
         loginUser.setLoginLocation(AddressUtils.getRealAddressByIP(ip));
         loginUser.setBrowser(userAgent.getBrowser().getName());
@@ -201,6 +200,6 @@ public class TokenService {
     }
 
     private String getTokenKey(String uuid) {
-        return CacheConstants.LOGIN_TOKEN_KEY + uuid;
+        return Constants.LOGIN_TOKEN_KEY + uuid;
     }
 }

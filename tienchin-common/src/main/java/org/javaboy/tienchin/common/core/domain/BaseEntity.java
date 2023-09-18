@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * Entity基类
@@ -20,7 +18,6 @@ public class BaseEntity implements Serializable {
     /**
      * 搜索值
      */
-    @JsonIgnore
     private String searchValue;
 
     /**
@@ -31,7 +28,7 @@ public class BaseEntity implements Serializable {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Asia/Shanghai")
     private Date createTime;
 
     /**
@@ -42,7 +39,7 @@ public class BaseEntity implements Serializable {
     /**
      * 更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Asia/Shanghai")
     private Date updateTime;
 
     /**
@@ -53,7 +50,6 @@ public class BaseEntity implements Serializable {
     /**
      * 请求参数
      */
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> params;
 
     public String getSearchValue() {

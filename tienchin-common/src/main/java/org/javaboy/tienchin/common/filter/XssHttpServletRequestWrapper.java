@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.apache.commons.io.IOUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.javaboy.tienchin.common.utils.StringUtils;
 import org.javaboy.tienchin.common.utils.html.EscapeUtil;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 /**
  * XSS过滤处理
@@ -31,12 +31,12 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         String[] values = super.getParameterValues(name);
         if (values != null) {
             int length = values.length;
-            String[] escapesValues = new String[length];
+            String[] escapseValues = new String[length];
             for (int i = 0; i < length; i++) {
                 // 防xss攻击和过滤前后空格
-                escapesValues[i] = EscapeUtil.clean(values[i]).trim();
+                escapseValues[i] = EscapeUtil.clean(values[i]).trim();
             }
-            return escapesValues;
+            return escapseValues;
         }
         return super.getParameterValues(name);
     }

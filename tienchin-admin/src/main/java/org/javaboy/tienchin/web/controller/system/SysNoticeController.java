@@ -2,6 +2,11 @@ package org.javaboy.tienchin.web.controller.system;
 
 import java.util.List;
 
+import org.javaboy.tienchin.common.core.controller.BaseController;
+import org.javaboy.tienchin.common.core.domain.AjaxResult;
+import org.javaboy.tienchin.common.enums.BusinessType;
+import org.javaboy.tienchin.system.domain.SysNotice;
+import org.javaboy.tienchin.system.service.ISysNoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -14,12 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.javaboy.tienchin.common.annotation.Log;
-import org.javaboy.tienchin.common.core.controller.BaseController;
-import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
-import org.javaboy.tienchin.common.enums.BusinessType;
-import org.javaboy.tienchin.system.domain.SysNotice;
-import org.javaboy.tienchin.system.service.ISysNoticeService;
 
 /**
  * 公告 信息操作处理
@@ -49,7 +49,7 @@ public class SysNoticeController extends BaseController {
     @PreAuthorize("hasPermission('system:notice:query')")
     @GetMapping(value = "/{noticeId}")
     public AjaxResult getInfo(@PathVariable Long noticeId) {
-        return success(noticeService.selectNoticeById(noticeId));
+        return AjaxResult.success(noticeService.selectNoticeById(noticeId));
     }
 
     /**

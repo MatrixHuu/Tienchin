@@ -94,5 +94,5 @@ public interface ISysDictTypeService {
      * @param dictType 字典类型
      * @return 结果
      */
-    public boolean checkDictTypeUnique(SysDictType dictType);
+    public String checkDictTypeUnique(SysDictType dictType);
 }

@@ -9,8 +9,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.http.MediaType;
 import org.javaboy.tienchin.common.utils.StringUtils;
+import org.springframework.http.MediaType;
 
 /**
  * Repeatable 过滤器

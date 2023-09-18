@@ -1,5 +1,6 @@
 package org.javaboy.tienchin.common.utils.spring;
 
+import org.javaboy.tienchin.common.utils.StringUtils;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import org.javaboy.tienchin.common.utils.StringUtils;
 
 /**
  * spring工具类 方便在非spring管理环境中获取bean
@@ -127,15 +127,5 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     public static String getActiveProfile() {
         final String[] activeProfiles = getActiveProfiles();
         return StringUtils.isNotEmpty(activeProfiles) ? activeProfiles[0] : null;
-    }
-
-    /**
-     * 获取配置文件中的值
-     *
-     * @param key 配置文件的key
-     * @return 当前的配置文件的值
-     */
-    public static String getRequiredProperty(String key) {
-        return applicationContext.getEnvironment().getRequiredProperty(key);
     }
 }

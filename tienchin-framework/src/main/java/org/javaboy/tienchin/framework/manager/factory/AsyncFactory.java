@@ -2,19 +2,19 @@ package org.javaboy.tienchin.framework.manager.factory;
 
 import java.util.TimerTask;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.javaboy.tienchin.common.constant.Constants;
 import org.javaboy.tienchin.common.utils.LogUtils;
 import org.javaboy.tienchin.common.utils.ServletUtils;
 import org.javaboy.tienchin.common.utils.StringUtils;
 import org.javaboy.tienchin.common.utils.ip.AddressUtils;
 import org.javaboy.tienchin.common.utils.ip.IpUtils;
-import org.javaboy.tienchin.common.utils.spring.SpringUtils;
 import org.javaboy.tienchin.system.domain.SysLogininfor;
 import org.javaboy.tienchin.system.domain.SysOperLog;
 import org.javaboy.tienchin.system.service.ISysLogininforService;
 import org.javaboy.tienchin.system.service.ISysOperLogService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.javaboy.tienchin.common.constant.Constants;
+import org.javaboy.tienchin.common.utils.spring.SpringUtils;
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**
@@ -37,7 +37,7 @@ public class AsyncFactory {
     public static TimerTask recordLogininfor(final String username, final String status, final String message,
                                              final Object... args) {
         final UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
-        final String ip = IpUtils.getIpAddr();
+        final String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
         return new TimerTask() {
             @Override
             public void run() {

@@ -1,8 +1,8 @@
 package org.javaboy.tienchin.quartz.util;
 
+import org.javaboy.tienchin.quartz.domain.SysJob;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
-import org.javaboy.tienchin.quartz.domain.SysJob;
 
 /**
  * 定时任务处理（禁止并发执行）

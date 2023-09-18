@@ -1,15 +1,15 @@
 package org.javaboy.tienchin.web.controller.system;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.domain.model.RegisterBody;
 import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.framework.web.service.SysRegisterService;
 import org.javaboy.tienchin.system.service.ISysConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.javaboy.tienchin.framework.web.service.SysRegisterService;
 
 /**
  * 注册验证

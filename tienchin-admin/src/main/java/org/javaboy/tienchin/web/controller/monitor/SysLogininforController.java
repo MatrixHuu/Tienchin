@@ -3,6 +3,13 @@ package org.javaboy.tienchin.web.controller.monitor;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import org.javaboy.tienchin.common.annotation.Log;
+import org.javaboy.tienchin.common.core.controller.BaseController;
+import org.javaboy.tienchin.common.core.domain.AjaxResult;
+import org.javaboy.tienchin.common.enums.BusinessType;
+import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
+import org.javaboy.tienchin.system.domain.SysLogininfor;
+import org.javaboy.tienchin.system.service.ISysLogininforService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,15 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.javaboy.tienchin.common.annotation.Log;
-import org.javaboy.tienchin.common.core.controller.BaseController;
-import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
-import org.javaboy.tienchin.common.enums.BusinessType;
-import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
-import org.javaboy.tienchin.framework.web.service.SysPasswordService;
-import org.javaboy.tienchin.system.domain.SysLogininfor;
-import org.javaboy.tienchin.system.service.ISysLogininforService;
 
 /**
  * 系统访问记录
@@ -31,9 +30,6 @@ import org.javaboy.tienchin.system.service.ISysLogininforService;
 public class SysLogininforController extends BaseController {
     @Autowired
     private ISysLogininforService logininforService;
-
-    @Autowired
-    private SysPasswordService passwordService;
 
     @PreAuthorize("hasPermission('monitor:logininfor:list')")
     @GetMapping("/list")
@@ -64,14 +60,6 @@ public class SysLogininforController extends BaseController {
     @DeleteMapping("/clean")
     public AjaxResult clean() {
         logininforService.cleanLogininfor();
-        return success();
-    }
-
-    @PreAuthorize("hasPermission('monitor:logininfor:unlock')")
-    @Log(title = "账户解锁", businessType = BusinessType.OTHER)
-    @GetMapping("/unlock/{userName}")
-    public AjaxResult unlock(@PathVariable("userName") String userName) {
-        passwordService.clearLoginRecordCache(userName);
-        return success();
+        return AjaxResult.success();
     }
 }

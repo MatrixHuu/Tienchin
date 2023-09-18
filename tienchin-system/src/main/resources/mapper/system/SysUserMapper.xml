@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
     
     <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
-		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader from sys_user u
+		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader from sys_user u
 		left join sys_dept d on u.dept_id = d.dept_id
 		where u.del_flag = '0'
 		<if test="userId != null and userId != 0">
@@ -122,7 +122,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectUserByUserName" parameterType="String" resultMap="SysUserResult">
 	    <include refid="selectUserVo"/>
-		where u.user_name = #{userName} and u.del_flag = '0'
+		where u.user_name = #{userName}
 	</select>
 	
 	<select id="selectUserById" parameterType="Long" resultMap="SysUserResult">
@@ -130,19 +130,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where u.user_id = #{userId}
 	</select>
 	
-	<select id="checkUserNameUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, user_name from sys_user where user_name = #{userName} and del_flag = '0' limit 1
+	<select id="checkUserNameUnique" parameterType="String" resultType="int">
+		select count(1) from sys_user where user_name = #{userName} limit 1
 	</select>
 	
 	<select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, phonenumber from sys_user where phonenumber = #{phonenumber} and del_flag = '0' limit 1
+		select user_id, phonenumber from sys_user where phonenumber = #{phonenumber} limit 1
 	</select>
 	
 	<select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, email from sys_user where email = #{email} and del_flag = '0' limit 1
+		select user_id, email from sys_user where email = #{email} limit 1
 	</select>
-	
-	<insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
+    <select id="getUsersByDeptId" resultMap="SysUserResult">
+		select su.user_id,su.nick_name,su.user_name,su.dept_id from sys_user su,sys_dept sd where su.dept_id=sd.dept_id and (find_in_set(#{deptId},ancestors) or su.dept_id=#{deptId});
+	</select>
+
+    <insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
  		insert into sys_user(
  			<if test="userId != null and userId != 0">user_id,</if>
  			<if test="deptId != null and deptId != 0">dept_id,</if>
@@ -208,7 +211,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<delete id="deleteUserById" parameterType="Long">
- 		update sys_user set del_flag = '2' where user_id = #{userId}
+		update sys_user set del_flag = '2' where user_id = #{userId}
  	</delete>
  	
  	<delete id="deleteUserByIds" parameterType="Long">

@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.javaboy.tienchin.common.utils.http.HttpHelper;
-import org.javaboy.tienchin.common.constant.Constants;
 
 /**
  * 构建可重复读取inputStream的request
@@ -23,10 +22,10 @@ public class RepeatedlyRequestWrapper extends HttpServletRequestWrapper {
 
     public RepeatedlyRequestWrapper(HttpServletRequest request, ServletResponse response) throws IOException {
         super(request);
-        request.setCharacterEncoding(Constants.UTF8);
-        response.setCharacterEncoding(Constants.UTF8);
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
 
-        body = HttpHelper.getBodyString(request).getBytes(Constants.UTF8);
+        body = HttpHelper.getBodyString(request).getBytes("UTF-8");
     }
 
     @Override

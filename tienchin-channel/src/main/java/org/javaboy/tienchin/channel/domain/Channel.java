@@ -3,9 +3,7 @@ package org.javaboy.tienchin.channel.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.javaboy.tienchin.common.annotation.Excel;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -15,8 +13,8 @@ import java.time.LocalDateTime;
  * 
  * </p>
  *
- * @author xyma
- * @since 2023-07-13
+ * @author javaboy
+ * @since 2022-12-03
  */
 @TableName("tienchin_channel")
 public class Channel implements Serializable {
@@ -36,7 +34,7 @@ public class Channel implements Serializable {
     /**
      * 渠道状态
      */
-    @Excel(name = "渠道状态", readConverterExp = "0=禁用,1=正常")
+    @Excel(name = "渠道状态", readConverterExp = "1=正常,0=禁用")
     private Byte status;
 
     /**
@@ -46,24 +44,17 @@ public class Channel implements Serializable {
     private String remark;
 
     /**
-     * 渠道类型：1线上渠道  2线下渠道
+     * 渠道类型：1 线上渠道 2 线下渠道
      */
     @Excel(name = "渠道类型", readConverterExp = "1=线上渠道,2=线下渠道")
     private Integer type;
 
-
     private String createBy;
-
 
     private String updateBy;
 
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime updateTime;
 
     private Integer delFlag;

@@ -2,20 +2,20 @@ package org.javaboy.tienchin.quartz.util;
 
 import java.util.Date;
 
+import org.javaboy.tienchin.common.constant.Constants;
+import org.javaboy.tienchin.common.utils.ExceptionUtil;
+import org.javaboy.tienchin.common.utils.StringUtils;
+import org.javaboy.tienchin.common.utils.bean.BeanUtils;
+import org.javaboy.tienchin.quartz.domain.SysJob;
+import org.javaboy.tienchin.quartz.domain.SysJobLog;
+import org.javaboy.tienchin.quartz.service.ISysJobLogService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.javaboy.tienchin.common.constant.Constants;
 import org.javaboy.tienchin.common.constant.ScheduleConstants;
-import org.javaboy.tienchin.common.utils.ExceptionUtil;
-import org.javaboy.tienchin.common.utils.StringUtils;
-import org.javaboy.tienchin.common.utils.bean.BeanUtils;
 import org.javaboy.tienchin.common.utils.spring.SpringUtils;
-import org.javaboy.tienchin.quartz.domain.SysJob;
-import org.javaboy.tienchin.quartz.domain.SysJobLog;
-import org.javaboy.tienchin.quartz.service.ISysJobLogService;
 
 /**
  * 抽象quartz调用

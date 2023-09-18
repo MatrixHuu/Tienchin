@@ -1,8 +1,6 @@
 package org.javaboy.tienchin.common.core.domain.entity;
 
-import java.util.Set;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -41,7 +39,7 @@ public class SysRole extends BaseEntity {
      * 角色排序
      */
     @Excel(name = "角色排序")
-    private Integer roleSort;
+    private String roleSort;
 
     /**
      * 数据范围（1：所有数据权限；2：自定义数据权限；3：本部门数据权限；4：本部门及以下数据权限；5：仅本人数据权限）
@@ -84,11 +82,6 @@ public class SysRole extends BaseEntity {
      * 部门组（数据权限）
      */
     private Long[] deptIds;
-
-    /**
-     * 角色菜单权限
-     */
-    private Set<String> permissions;
 
     public SysRole() {
 
@@ -134,12 +127,12 @@ public class SysRole extends BaseEntity {
         this.roleKey = roleKey;
     }
 
-    @NotNull(message = "显示顺序不能为空")
-    public Integer getRoleSort() {
+    @NotBlank(message = "显示顺序不能为空")
+    public String getRoleSort() {
         return roleSort;
     }
 
-    public void setRoleSort(Integer roleSort) {
+    public void setRoleSort(String roleSort) {
         this.roleSort = roleSort;
     }
 
@@ -205,14 +198,6 @@ public class SysRole extends BaseEntity {
 
     public void setDeptIds(Long[] deptIds) {
         this.deptIds = deptIds;
-    }
-
-    public Set<String> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(Set<String> permissions) {
-        this.permissions = permissions;
     }
 
     @Override
